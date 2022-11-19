@@ -1,2 +1,7 @@
-# great-model-theory
-Cloud infrastructure for continuous model training, deployment, and monitoring
+# Great model theory
+
+*The history of the world is but the biography of great machine learning
+models.*
+
+Cloud infrastructure for continuous machine learning model training,
+deployment, and monitoring.
