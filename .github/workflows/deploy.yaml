@@ -6,11 +6,11 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - id: 'auth'
-          name: 'Authenticate to Google Cloud'
-          uses: 'google-github-actions/auth@v1'
-          with:
-            workload_identity_provider: 'projects/502036974399/locations/global/workloadIdentityPools/renaissance-man-pool/providers/renaissance-man-provider'
-            service_account: 'terraform@renaissance-man-385715.iam.gserviceaccount.com'
+        name: 'Authenticate to Google Cloud'
+        uses: 'google-github-actions/auth@v1'
+        with:
+          workload_identity_provider: 'projects/502036974399/locations/global/workloadIdentityPools/renaissance-man-pool/providers/renaissance-man-provider'
+          service_account: 'terraform@renaissance-man-385715.iam.gserviceaccount.com'
       # TODO consider using Terraform Cloud
       #- name: Set up Terraform Cloud
       #  uses: hashicorp/setup-terraform@v2
@@ -44,11 +44,11 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - id: 'auth'
-          name: 'Authenticate to Google Cloud'
-          uses: 'google-github-actions/auth@v1'
-          with:
-            workload_identity_provider: 'projects/502036974399/locations/global/workloadIdentityPools/renaissance-man-pool/providers/renaissance-man-provider'
-            service_account: 'terraform@renaissance-man-385715.iam.gserviceaccount.com'
+        name: 'Authenticate to Google Cloud'
+        uses: 'google-github-actions/auth@v1'
+        with:
+          workload_identity_provider: 'projects/502036974399/locations/global/workloadIdentityPools/renaissance-man-pool/providers/renaissance-man-provider'
+          service_account: 'terraform@renaissance-man-385715.iam.gserviceaccount.com'
       # TODO consider using Terraform Cloud
       #- name: Set up Terraform Cloud
       #  uses: hashicorp/setup-terraform@v2
