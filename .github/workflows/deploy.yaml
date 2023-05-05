@@ -3,11 +3,8 @@ on: [push, pull_request, workflow_dispatch]
 jobs:
   terraform-validate:
     runs-on: ubuntu-latest
-      # TODO consider using Terraform Cloud
-      #- name: Set up Terraform Cloud
-      #  uses: hashicorp/setup-terraform@v2
-      #  with:
-      #    cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+    steps:
+      - uses: actions/checkout@v3
       - name: Lint and validate Terraform plan
         run: |
           cd terraform
