@@ -1,0 +1,51 @@
+name: Deploy infrastructure
+on: [push, pull_request, workflow_dispatch]
+jobs:
+  terraform-validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v2
+      - name: Lint and validate Terraform plan
+        run: |
+          cd terraform
+          terraform init
+          terraform fmt -check
+          terraform validate
+  trufflehog:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: TruffleHog OSS
+        uses: trufflesecurity/trufflehog@main
+        with:
+          path: ./
+          base: ${{ github.event.repository.default_branch }}
+          head: HEAD
+          extra_args: --debug --only-verified
+  deploy-infrastructure:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    needs: [terraform-validate, trufflehog]
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+    steps:
+      - uses: actions/checkout@v3
+      - id: 'auth'
+        name: 'Authenticate to Google Cloud'
+        uses: 'google-github-actions/auth@v1'
+        with:
+          workload_identity_provider: 'projects/502036974399/locations/global/workloadIdentityPools/renaissance-man-pool/providers/renaissance-man-provider'
+          service_account: 'terraform@renaissance-man-385715.iam.gserviceaccount.com'
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v2
+      - name: Deploy terraform infrastructure
+        run: |
+          cd terraform
+          terraform init
+          terraform apply -auto-approve
