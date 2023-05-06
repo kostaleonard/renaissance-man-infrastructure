@@ -28,8 +28,7 @@ jobs:
           head: HEAD
           extra_args: --debug --only-verified
   deploy-infrastructure:
-    # TODO only use main branch
-    # if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     needs: [terraform-validate, trufflehog]
     permissions:
@@ -43,10 +42,6 @@ jobs:
         with:
           workload_identity_provider: 'projects/502036974399/locations/global/workloadIdentityPools/renaissance-man-pool/providers/renaissance-man-provider'
           service_account: 'terraform@renaissance-man-385715.iam.gserviceaccount.com'
-#      - name: Set GOOGLE_APPLICATION_CREDENTIALS
-#        run: |
-#          export GOOGLE_APPLICATION_CREDENTIALS='${{ steps.auth.outputs.credentials_file_path }}'
-      # TODO consider using Terraform Cloud
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@v2
       - name: Deploy terraform infrastructure
