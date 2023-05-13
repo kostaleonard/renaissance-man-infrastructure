@@ -1,7 +1,7 @@
 name: Deploy infrastructure
 on: [push, pull_request, workflow_dispatch]
 jobs:
-  terraform-validate:
+  terraform-plan:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -9,12 +9,12 @@ jobs:
         uses: hashicorp/setup-terraform@v2
         with:
           cli_config_credentials_token: ${{ secrets.TERRAFORM_API_TOKEN }}
-      - name: Lint and validate Terraform plan
+      - name: Lint and check Terraform plan
         run: |
           cd terraform
           terraform init
           terraform fmt -check
-          terraform validate
+          terraform plan
   trufflehog:
     runs-on: ubuntu-latest
     steps:
@@ -32,7 +32,7 @@ jobs:
   deploy-infrastructure:
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
-    needs: [terraform-validate, trufflehog]
+    needs: [terraform-plan, trufflehog]
     steps:
       - uses: actions/checkout@v3
       - name: Set up Terraform
