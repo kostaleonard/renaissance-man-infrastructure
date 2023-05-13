@@ -5,12 +5,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - id: 'auth'
-        name: 'Authenticate to Google Cloud'
-        uses: 'google-github-actions/auth@v1'
-        with:
-          workload_identity_provider: 'projects/502036974399/locations/global/workloadIdentityPools/renaissance-man-pool/providers/renaissance-man-provider'
-          service_account: 'terraform@renaissance-man-385715.iam.gserviceaccount.com'
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@v2
       - name: Destroy terraform infrastructure
