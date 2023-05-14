@@ -11,15 +11,26 @@ terraform {
       source  = "hashicorp/google"
       version = "4.63.1"
     }
+    kubernetes = {
+      source  = "hashicorp/kubernetes"
+      version = "2.20.0"
+    }
   }
 }
 
 provider "google" {
-  project = "renaissance-man-385715"
-  region  = "us-east4"
-  zone    = "us-east4-a"
+  project = var.project_id
 }
 
-resource "google_compute_network" "vpc_network" {
-  name = "renaissance-man-vpc"
+data "google_client_config" "default" {}
+
+provider "kubernetes" {
+  host                   = "https://${module.gke.endpoint}"
+  token                  = data.google_client_config.default.access_token
+  cluster_ca_certificate = base64decode(module.gke.ca_certificate)
+}
+
+locals {
+  cluster_pod_ip_range_name     = "renaissance-man-cluster-pod-ips"
+  cluster_service_ip_range_name = "renaissance-man-cluster-service-ips"
 }
